@@ -1,0 +1,9 @@
+---
+ansible_user: "{{ user[inventory_hostname] }}"
+ansible_ssh_pass: "{{ password[inventory_hostname] }}"
+backup_files:
+  - ospfd.conf
+  - bgpd.conf
+  - zebra.conf
+  - daemons
+  - debian.conf
