@@ -1,6 +1,7 @@
 ---
 ansible_user: "{{ user[inventory_hostname] }}"
 ansible_ssh_pass: "{{ password[inventory_hostname] }}"
+ansible_sudo_pass: "{{ password[inventory_hostname] }}"
 backup_files:
   - ospfd.conf
   - bgpd.conf
