@@ -4,7 +4,7 @@
   vars_files:
   - ./vault/secrets.yaml
   vars:
-  - network_backup_repository: git@gitlab.ids.al:ansible-backups/quagga.git
+  - network_backup_repository: "YOUR GIT REPOSITORY HERE"
   - network_backup_dir: /tmp/quagga/
   tasks:
     - name: Clone the backup repo
@@ -22,9 +22,10 @@
         src: "/etc/quagga/{{ item }}"
         dest: "{{ network_backup_dir }}"
       loop: "{{ backup_files }}"
-
+      when: backup_host == "TRUE"
+      become: yes
     - block:
-      - name: Add any new backups to the repossitory
+      - name: Add any new backups to the repository
         shell: "git add ."
         args:
           chdir: "{{ network_backup_dir }}"
@@ -69,7 +70,7 @@
           GIT_COMMITTER_EMAIL: "{{ git_email | default(omit) }}"
           GIT_AUTHOR_NAME: "{{ git_name | default(omit) }}"
           GIT_AUTHOR_EMAIL: "{{ git_email | default(omit) }}"
-      when: network_backup_repository is defined
+        when: network_backup_repository is defined
     - name: Delete backup directory
       file: path="{{ network_backup_dir }}" state=absent
       run_once: true
